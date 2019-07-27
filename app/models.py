@@ -14,7 +14,7 @@ class Account(db.Model):
 
     def __repr__(self):
         return '<\naccount_email = {}\naccount_status = {}\naccount_create_time = {}\n>'\
-            .format(self.acoount_email, self.account_status, self.account_create_time)
+            .format(self.account_email, self.account_status, self.account_create_time)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -1,22 +1,20 @@
 from app import db
-from app.models import User
+from app.models import Account
 
 if __name__ == '__main__':
 
-    u = User(
-        username='Mike',
-        email='Mike@example.com',
-        phone_number='11311311113',
+    a = Account(
+        account_email='Mike@example.com'
     )
 
-    u.set_password('123456')
+    a.set_password('123456')
 
-    print(u.check_password('123456'))
-    db.session.add(u)
+    print(a.check_password('123456'))
+    db.session.add(a)
     db.session.commit()
 
-    users = User.query.all()
-    print(users)
+    accounts = Account.query.all()
+    print(accounts)
     # username = "Mike"
     # users = User.query.filter(User.username == username).all()
     # print(users)

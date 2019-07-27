@@ -7,7 +7,7 @@ from werkzeug.http import HTTP_STATUS_CODES
 
 # get account by account_id
 @app.route('/api/account-id/<int:account_id>', methods=['GET'])
-def get_user_by_uid(account_id):
+def get_account_by_account_id(account_id):
     data = list()
     data.append(Account.query.get_or_404(account_id).to_dict())
     return jsonify(data)
@@ -15,7 +15,7 @@ def get_user_by_uid(account_id):
 
 # get account by account_email
 @app.route('/api/account-email/<string:account_email>', methods=['GET'])
-def get_user_by_username(account_email):
+def get_account_by_account_email(account_email):
     data = list()
     data.append(Account.query.filter(Account.account_email == account_email).first_or_404().to_dict())
     return jsonify(data)
@@ -23,7 +23,7 @@ def get_user_by_username(account_email):
 
 # get account by account_status
 @app.route('/api/account-status/<string:account_status>', methods=['GET'])
-def get_user_by_phone_number(account_status):
+def get_account_by_account_status(account_status):
     data = list()
     for account in Account.query.filter(Account.account_status == account_status).all():
         data.append(account.to_dict())
@@ -32,7 +32,7 @@ def get_user_by_phone_number(account_status):
 
 # get all accounts
 @app.route('/api/all-accounts', methods=['GET'])
-def get_all_users():
+def get_all_accounts():
     data = list()
     for account in Account.query.all():
         data.append(account.to_dict())
@@ -41,7 +41,7 @@ def get_all_users():
 
 # create new account
 @app.route('/api/create-account', methods=['POST'])
-def create_new_user():
+def create_new_account():
     account_email = request.form.get('account_email')
     password = request.form.get('password')
 
@@ -67,7 +67,7 @@ def create_new_user():
 
 # update account info
 @app.route('/api/update-account', methods=['PUT'])
-def update_user():
+def update_account():
     account_email = request.form.get('account_email')
     if account_email is None:
         return bad_request('This post must include account_email field.')
@@ -101,7 +101,7 @@ def update_user():
 
 
 # verify username and password
-@app.route('/api/validate-password/', methods=['POST'])
+@app.route('/api/validate-password', methods=['POST'])
 def validate_password():
     # Get user information from POST
     account_email = request.form.get('account_email')
