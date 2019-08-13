@@ -3,6 +3,8 @@ from app.models import Account
 from flask import jsonify
 from flask import request
 from werkzeug.http import HTTP_STATUS_CODES
+from email_pack import send_register_email
+from app.models import Account
 
 
 # get account by account_id
@@ -123,6 +125,41 @@ def validate_password():
     # authentication verify failed.
     return jsonify([{'account_id': -1, 'account_email': account.account_email,
                      'account_status': 'Unavailable', 'password_validation': 'False'}])
+
+
+# send email by account_id fields
+@app.route('/api/email-sending-by-account-id', methods=['POST'])
+def send_email_by_account_id():
+    account_id = request.form.get('account_id')
+    account_unavailable = Account.query.filter_by(account_id=account_id).first()
+    send_register_email(account_unavailable)
+    data = [{'account_id': account_id, 'email_status': 'success'}]
+    return jsonify(data)
+
+
+# send email by account_email fields
+@app.route('/api/email-sending-by-account-email', methods=['POST'])
+def send_email_by_account_email():
+    account_email = request.form.get('account_email')
+    account_unavailable = Account.query.filter_by(account_email=account_email).first()
+    send_register_email(account_unavailable)
+    data = [{'account_email': account_email, 'email_status': 'success'}]
+    return jsonify(data)
+
+
+# receive registration token
+@app.route('/api/registration/token-receiving/<string:token>', methods=['GET'])
+def receive_registration_token(token):
+    data = list()
+    account_verified = Account.verify_register_token(token=token)
+    # change account_status
+    if account_verified.account_status == 'uncheck':
+        account_verified.account_status = 'checked'
+    # update account_status in db
+    db.session.add(account_verified)
+    db.session.commit()
+    data.append(account_verified.to_dict())
+    return jsonify(data)
 
 
 # bad requests holder

@@ -1,21 +1,8 @@
 from app import db
 from app.models import Account
+import requests
 
 if __name__ == '__main__':
 
-    a = Account(
-        account_email='Mike@example.com'
-    )
-
-    a.set_password('123456')
-
-    print(a.check_password('123456'))
-    db.session.add(a)
-    db.session.commit()
-
-    accounts = Account.query.all()
-    print(accounts)
-    # username = "Mike"
-    # users = User.query.filter(User.username == username).all()
-    # print(users)
+    requests.post('http://127.0.0.1:5000/api/email-sending-by-account-id', data={'account_id': '1'})
     pass

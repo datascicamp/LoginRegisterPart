@@ -1,6 +1,9 @@
 from app import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from time import time
+import jwt
+from app import app
 
 
 class Account(db.Model):
@@ -32,3 +35,16 @@ class Account(db.Model):
         }
         return data
 
+    # for mail sending - register verification
+    def get_register_token(self, expires_in=1800):
+        data_structure = {'registration': self.account_id, 'exp': time() + expires_in}
+        ciphered_msg = jwt.encode(data_structure, app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+        return ciphered_msg
+
+    @staticmethod
+    def verify_register_token(token):
+        try:
+            account_id = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])['registration']
+        except:
+            return
+        return Account.query.get(account_id)
