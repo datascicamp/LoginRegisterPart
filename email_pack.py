@@ -2,6 +2,13 @@ from flask_mail import Message
 from flask import render_template
 from app import mail
 from app import app
+from threading import Thread
+
+
+# send async email
+def send_async_email(current_app, msg):
+    with current_app.app_context():
+        mail.send(msg)
 
 
 # function of sending email
@@ -9,7 +16,8 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
-    mail.send(msg)
+    Thread(target=send_async_email, args=(app, msg)).start()
+    # mail.send(msg)
 
 
 # send register confirm password

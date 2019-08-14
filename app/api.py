@@ -153,8 +153,8 @@ def receive_registration_token(token):
     data = list()
     account_verified = Account.verify_register_token(token=token)
     # change account_status
-    if account_verified.account_status == 'uncheck':
-        account_verified.account_status = 'checked'
+    if account_verified.account_status == 'unverify':
+        account_verified.account_status = 'verified'
     # update account_status in db
     db.session.add(account_verified)
     db.session.commit()
