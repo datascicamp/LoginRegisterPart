@@ -127,50 +127,50 @@ def validate_password():
                      'account_status': 'Unavailable', 'password_validation': 'False'}])
 
 
-# send registration email by account_id fields
-@app.route('/api/registration/email-sending-by-account-id', methods=['POST'])
-def send_registration_email_by_account_id():
-    account_id = request.form.get('account_id')
-    account_unavailable = Account.query.filter_by(account_id=account_id).first()
-    send_register_email(account_unavailable)
-    data = [{'account_id': account_id, 'email_status': 'success'}]
-    return jsonify(data)
+# # send registration email by account_id fields
+# @app.route('/api/registration/email-sending-by-account-id', methods=['POST'])
+# def send_registration_email_by_account_id():
+#     account_id = request.form.get('account_id')
+#     account_unavailable = Account.query.filter_by(account_id=account_id).first()
+#     send_register_email(account_unavailable)
+#     data = [{'account_id': account_id, 'email_status': 'success'}]
+#     return jsonify(data)
 
 
-# send registration email by account_email fields
-@app.route('/api/registration/email-sending-by-account-email', methods=['POST'])
-def send_registration_email_by_account_email():
-    account_email = request.form.get('account_email')
-    account_unavailable = Account.query.filter_by(account_email=account_email).first()
-    send_register_email(account_unavailable)
-    data = [{'account_email': account_email, 'email_status': 'success'}]
-    return jsonify(data)
+# # send registration email by account_email fields
+# @app.route('/api/registration/email-sending-by-account-email', methods=['POST'])
+# def send_registration_email_by_account_email():
+#     account_email = request.form.get('account_email')
+#     account_unavailable = Account.query.filter_by(account_email=account_email).first()
+#     send_register_email(account_unavailable)
+#     data = [{'account_email': account_email, 'email_status': 'success'}]
+#     return jsonify(data)
 
 
-# receive registration token
-@app.route('/api/registration/token-receiving/<string:token>', methods=['GET'])
-def receive_registration_token(token):
-    data = list()
-    account_verified = Account.verify_register_token(token=token)
-    # change account_status
-    if account_verified.account_status == 'unverify':
-        account_verified.account_status = 'verified'
-    # update account_status in db
-    db.session.add(account_verified)
-    db.session.commit()
-    data.append(account_verified.to_dict())
-    return jsonify(data)
+# # receive registration token
+# @app.route('/api/registration/token-receiving/<string:token>', methods=['GET'])
+# def receive_registration_token(token):
+#     data = list()
+#     account_verified = Account.verify_register_token(token=token)
+#     # change account_status
+#     if account_verified.account_status == 'unverify':
+#         account_verified.account_status = 'verified'
+#     # update account_status in db
+#     db.session.add(account_verified)
+#     db.session.commit()
+#     data.append(account_verified.to_dict())
+#     return jsonify(data)
 
 
-# ToDo: migrate these mail-based function to a new part
-# send reset password email by account_email fields
-@app.route('/api/reset-password/email-sending-by-account-email', methods=['POST'])
-def send_reset_password_email_by_account_email():
-    account_email = request.form.get('account_email')
-    account_to_reset = Account.query.filter_by(account_email=account_email).first()
-    send_password_reset_email(account_to_reset)
-    data = [{'account_email': account_email, 'email_status': 'success'}]
-    return jsonify(data)
+# # ToDo: migrate these mail-based function to a new part
+# # send reset password email by account_email fields
+# @app.route('/api/reset-password/email-sending-by-account-email', methods=['POST'])
+# def send_reset_password_email_by_account_email():
+#     account_email = request.form.get('account_email')
+#     account_to_reset = Account.query.filter_by(account_email=account_email).first()
+#     send_password_reset_email(account_to_reset)
+#     data = [{'account_email': account_email, 'email_status': 'success'}]
+#     return jsonify(data)
 
 
 # receive reset password token
@@ -178,8 +178,101 @@ def send_reset_password_email_by_account_email():
 def receive_reset_password_token(token):
     data = list()
     account_reset = Account.verify_reset_password_token(token=token)
-    msg = {'account_email': account_reset.account_email, 'reset_status': 'success'}
-    data.append(msg)
+    if account_reset is None:
+        msg = 'Can not match this token. Invalid token = ' + str(token)
+        return bad_request(msg)
+    data.append(account_reset.to_dict())
+    return jsonify(data)
+
+
+# receive registration password token
+@app.route('/api/registration/token-receiving/<string:token>', methods=['GET'])
+def receive_registration_token(token):
+    data = list()
+    account_verified = Account.verify_register_token(token=token)
+    # invalid token
+    if account_verified is None:
+        msg = 'Can not match this token. Invalid token = ' + str(token)
+        return bad_request(msg)
+    # account_status changed successfully
+    elif account_verified.account_status == 'unverify':
+        account_verified.account_status = 'verified'
+        # update account_status in db
+        db.session.add(account_verified)
+        db.session.commit()
+        data.append(account_verified.to_dict())
+        return jsonify(data)
+    else:
+        msg = 'account_status can not change from unverify to verified. Current account_status = '\
+              + str(account_verified.account_status)
+        return bad_request(msg)
+
+
+# get registration token by account_email
+@app.route('/api/registration/token-creating/account-email/<string:account_email>', methods=['GET'])
+def get_registration_token_by_account_email(account_email):
+    data = list()
+    account = Account.query.filter_by(account_email=account_email).first()
+    if account is None:
+        err_msg = {'status': 'failed', 'error_msg': 'Can not match this email address. Empty email addr = '+str(account_email)}
+        data.append(err_msg)
+        return jsonify(data)
+    token = account.get_register_token()
+    account_with_token_dict = account.to_dict()
+    account_with_token_dict['status'] = 'success'
+    account_with_token_dict['token'] = token
+    data.append(account_with_token_dict)
+    return jsonify(data)
+
+
+# get registration token by account_id
+@app.route('/api/registration/token-creating/account-id/<string:account_id>', methods=['GET'])
+def get_registration_token_by_account_id(account_id):
+    data = list()
+    account = Account.query.filter_by(account_id=account_id).first()
+    if account is None:
+        err_msg = {'status': 'failed', 'error_msg': 'Can not match this account_id. Empty account_id = '+str(account_id)}
+        data.append(err_msg)
+        return jsonify(data)
+    token = account.get_register_token()
+    account_with_token_dict = account.to_dict()
+    account_with_token_dict['status'] = 'success'
+    account_with_token_dict['token'] = token
+    data.append(account_with_token_dict)
+    return jsonify(data)
+
+
+# get reset password token by account_email
+@app.route('/api/reset-password/token-creating/account-email/<string:account_email>', methods=['GET'])
+def get_reset_password_token_by_account_email(account_email):
+    data = list()
+    account = Account.query.filter_by(account_email=account_email).first()
+    if account is None:
+        err_msg = {'status': 'failed', 'error_msg': 'Can not match this email address. Empty email addr = '+str(account_email)}
+        data.append(err_msg)
+        return jsonify(data)
+    token = account.get_reset_password_token()
+    account_with_token_dict = account.to_dict()
+    account_with_token_dict['status'] = 'success'
+    account_with_token_dict['token'] = token
+    data.append(account_with_token_dict)
+    return jsonify(data)
+
+
+# get reset password token by account_email
+@app.route('/api/reset-password/token-creating/account-id/<string:account_id>', methods=['GET'])
+def get_reset_password_token_by_account_id(account_id):
+    data = list()
+    account = Account.query.filter_by(account_id=account_id).first()
+    if account is None:
+        err_msg = {'status': 'failed', 'error_msg': 'Can not match this email address. Empty email addr = '+str(account_id)}
+        data.append(err_msg)
+        return jsonify(data)
+    token = account.get_reset_password_token()
+    account_with_token_dict = account.to_dict()
+    account_with_token_dict['status'] = 'success'
+    account_with_token_dict['token'] = token
+    data.append(account_with_token_dict)
     return jsonify(data)
 
 
