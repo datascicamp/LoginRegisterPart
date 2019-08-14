@@ -35,7 +35,7 @@ class Account(db.Model):
         }
         return data
 
-    # for mail sending - register verification
+    # for email sending - register verification
     def get_register_token(self, expires_in=1800):
         data_structure = {'registration': self.account_id, 'exp': time() + expires_in}
         ciphered_msg = jwt.encode(data_structure, app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
@@ -45,6 +45,20 @@ class Account(db.Model):
     def verify_register_token(token):
         try:
             account_id = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])['registration']
+        except:
+            return
+        return Account.query.get(account_id)
+
+    # for email sending - password resetting
+    def get_reset_password_token(self, expires_in=1800):
+        data_structure = {'reset_password': self.account_id, 'exp': time() + expires_in}
+        ciphered_msg = jwt.encode(data_structure, app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+        return ciphered_msg
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            account_id = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])['reset_password']
         except:
             return
         return Account.query.get(account_id)

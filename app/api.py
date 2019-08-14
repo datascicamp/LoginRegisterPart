@@ -3,7 +3,7 @@ from app.models import Account
 from flask import jsonify
 from flask import request
 from werkzeug.http import HTTP_STATUS_CODES
-from email_pack import send_register_email
+from email_pack import send_register_email, send_password_reset_email
 from app.models import Account
 
 
@@ -127,9 +127,9 @@ def validate_password():
                      'account_status': 'Unavailable', 'password_validation': 'False'}])
 
 
-# send email by account_id fields
-@app.route('/api/email-sending-by-account-id', methods=['POST'])
-def send_email_by_account_id():
+# send registration email by account_id fields
+@app.route('/api/registration/email-sending-by-account-id', methods=['POST'])
+def send_registration_email_by_account_id():
     account_id = request.form.get('account_id')
     account_unavailable = Account.query.filter_by(account_id=account_id).first()
     send_register_email(account_unavailable)
@@ -137,9 +137,9 @@ def send_email_by_account_id():
     return jsonify(data)
 
 
-# send email by account_email fields
-@app.route('/api/email-sending-by-account-email', methods=['POST'])
-def send_email_by_account_email():
+# send registration email by account_email fields
+@app.route('/api/registration/email-sending-by-account-email', methods=['POST'])
+def send_registration_email_by_account_email():
     account_email = request.form.get('account_email')
     account_unavailable = Account.query.filter_by(account_email=account_email).first()
     send_register_email(account_unavailable)
@@ -159,6 +159,27 @@ def receive_registration_token(token):
     db.session.add(account_verified)
     db.session.commit()
     data.append(account_verified.to_dict())
+    return jsonify(data)
+
+
+# ToDo: migrate these mail-based function to a new part
+# send reset password email by account_email fields
+@app.route('/api/reset-password/email-sending-by-account-email', methods=['POST'])
+def send_reset_password_email_by_account_email():
+    account_email = request.form.get('account_email')
+    account_to_reset = Account.query.filter_by(account_email=account_email).first()
+    send_password_reset_email(account_to_reset)
+    data = [{'account_email': account_email, 'email_status': 'success'}]
+    return jsonify(data)
+
+
+# receive reset password token
+@app.route('/api/reset-password/token-receiving/<string:token>', methods=['GET'])
+def receive_reset_password_token(token):
+    data = list()
+    account_reset = Account.verify_reset_password_token(token=token)
+    msg = {'account_email': account_reset.account_email, 'reset_status': 'success'}
+    data.append(msg)
     return jsonify(data)
 
 
