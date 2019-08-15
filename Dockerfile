@@ -16,7 +16,7 @@ RUN pip install pyjwt
 RUN pip install flask_bootstrap
 RUN pip install python-dotenv
 # Expose port
-EXPOSE 80
+EXPOSE 5000
 # Run command
 ENTRYPOINT ["python","./webServer.py"]
 
