@@ -32,11 +32,3 @@ class Config(object):
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # for Mail Server
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = '587'
-    MAIL_USE_TLS = '1'
-    MAIL_USERNAME = 'leontian1024'
-    MAIL_PASSWORD = '@last007'
-
-    ADMINS = ['leontian1024@gmail.com']

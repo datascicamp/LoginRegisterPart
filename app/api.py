@@ -3,12 +3,11 @@ from app.models import Account
 from flask import jsonify
 from flask import request
 from werkzeug.http import HTTP_STATUS_CODES
-from email_pack import send_register_email, send_password_reset_email
 from app.models import Account
 
 
 # get account by account_id
-@app.route('/api/account-id/<int:account_id>', methods=['GET'])
+@app.route('/api/account/account-id/<int:account_id>', methods=['GET'])
 def get_account_by_account_id(account_id):
     data = list()
     data.append(Account.query.get_or_404(account_id).to_dict())
@@ -16,7 +15,7 @@ def get_account_by_account_id(account_id):
 
 
 # get account by account_email
-@app.route('/api/account-email/<string:account_email>', methods=['GET'])
+@app.route('/api/account/account-email/<string:account_email>', methods=['GET'])
 def get_account_by_account_email(account_email):
     data = list()
     data.append(Account.query.filter(Account.account_email == account_email).first_or_404().to_dict())
@@ -24,7 +23,7 @@ def get_account_by_account_email(account_email):
 
 
 # get account by account_status
-@app.route('/api/account-status/<string:account_status>', methods=['GET'])
+@app.route('/api/account/account-status/<string:account_status>', methods=['GET'])
 def get_account_by_account_status(account_status):
     data = list()
     for account in Account.query.filter(Account.account_status == account_status).all():
@@ -33,7 +32,7 @@ def get_account_by_account_status(account_status):
 
 
 # get all accounts
-@app.route('/api/all-accounts', methods=['GET'])
+@app.route('/api/account/all-accounts', methods=['GET'])
 def get_all_accounts():
     data = list()
     for account in Account.query.all():
@@ -42,7 +41,7 @@ def get_all_accounts():
 
 
 # create new account
-@app.route('/api/create-account', methods=['POST'])
+@app.route('/api/account/account-creating', methods=['POST'])
 def create_new_account():
     account_email = request.form.get('account_email')
     password = request.form.get('password')
@@ -68,7 +67,7 @@ def create_new_account():
 
 
 # update account info
-@app.route('/api/update-account', methods=['PUT'])
+@app.route('/api/account/account-updating', methods=['PUT'])
 def update_account():
     account_email = request.form.get('account_email')
     if account_email is None:
@@ -103,7 +102,7 @@ def update_account():
 
 
 # verify username and password
-@app.route('/api/validate-password', methods=['POST'])
+@app.route('/api/account/validate-password', methods=['POST'])
 def validate_password():
     # Get user information from POST
     account_email = request.form.get('account_email')
@@ -125,52 +124,6 @@ def validate_password():
     # authentication verify failed.
     return jsonify([{'account_id': -1, 'account_email': account.account_email,
                      'account_status': 'Unavailable', 'password_validation': 'False'}])
-
-
-# # send registration email by account_id fields
-# @app.route('/api/registration/email-sending-by-account-id', methods=['POST'])
-# def send_registration_email_by_account_id():
-#     account_id = request.form.get('account_id')
-#     account_unavailable = Account.query.filter_by(account_id=account_id).first()
-#     send_register_email(account_unavailable)
-#     data = [{'account_id': account_id, 'email_status': 'success'}]
-#     return jsonify(data)
-
-
-# # send registration email by account_email fields
-# @app.route('/api/registration/email-sending-by-account-email', methods=['POST'])
-# def send_registration_email_by_account_email():
-#     account_email = request.form.get('account_email')
-#     account_unavailable = Account.query.filter_by(account_email=account_email).first()
-#     send_register_email(account_unavailable)
-#     data = [{'account_email': account_email, 'email_status': 'success'}]
-#     return jsonify(data)
-
-
-# # receive registration token
-# @app.route('/api/registration/token-receiving/<string:token>', methods=['GET'])
-# def receive_registration_token(token):
-#     data = list()
-#     account_verified = Account.verify_register_token(token=token)
-#     # change account_status
-#     if account_verified.account_status == 'unverify':
-#         account_verified.account_status = 'verified'
-#     # update account_status in db
-#     db.session.add(account_verified)
-#     db.session.commit()
-#     data.append(account_verified.to_dict())
-#     return jsonify(data)
-
-
-# # ToDo: migrate these mail-based function to a new part
-# # send reset password email by account_email fields
-# @app.route('/api/reset-password/email-sending-by-account-email', methods=['POST'])
-# def send_reset_password_email_by_account_email():
-#     account_email = request.form.get('account_email')
-#     account_to_reset = Account.query.filter_by(account_email=account_email).first()
-#     send_password_reset_email(account_to_reset)
-#     data = [{'account_email': account_email, 'email_status': 'success'}]
-#     return jsonify(data)
 
 
 # receive reset password token
@@ -259,7 +212,7 @@ def get_reset_password_token_by_account_email(account_email):
     return jsonify(data)
 
 
-# get reset password token by account_email
+# get reset password token by account_id
 @app.route('/api/reset-password/token-creating/account-id/<string:account_id>', methods=['GET'])
 def get_reset_password_token_by_account_id(account_id):
     data = list()

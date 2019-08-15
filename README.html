@@ -1,0 +1,198 @@
+
+
+
+
+
+
+
+        <!-- ########## -->
+
+        <h1>Developers Guide &amp; Tutorial</h1>
+        <br>
+        <h3>API usages</h3>
+        <br>
+
+        <!-- 已发表的言论 -->
+
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/account/account-id/&lt;int:account_id&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Get account by account_id
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/account/account-email/&lt;string:account_email&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Get account by account_email
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/account/account-status/&lt;string:account_status&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Get account by account_status
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/account/all-accounts</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Get all accounts
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/account/account-creating</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> POST
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Create new account
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/account/account-updating</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> PUT
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Update account info
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/account/validate-password</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> POST
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Verify username and password
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/reset-password/token-receiving/&lt;string:token&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Receive reset password token
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/registration/token-receiving/&lt;string:token&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Receive registration password token
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/registration/token-creating/account-email/&lt;string:account_email&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Get registration token by account_email
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/registration/token-creating/account-id/&lt;string:account_id&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Get registration token by account_id
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/reset-password/token-creating/account-email/&lt;string:account_email&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Get reset password token by account_email
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>API format:    /api/reset-password/token-creating/account-id/&lt;string:account_id&gt;</h4>
+                    </div>
+                    <div class="panel-footer">
+                        <b>Method:   </b> GET
+                    </div>
+                    <div class="panel-footer">
+                        <b>Description:   </b> Get reset password token by account_id
+                    </div>
+                </div>
+            </div>
