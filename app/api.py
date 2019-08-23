@@ -53,7 +53,7 @@ def create_new_account():
         return bad_request('please use a different account_email.')
 
     # db operations
-    new_account = Account(account_email=account_email)
+    new_account = Account(account_email=account_email, account_status='unverify')
     new_account.set_password(password)
     db.session.add(new_account)
     db.session.commit()
@@ -126,23 +126,13 @@ def validate_password():
                      'account_status': 'Unavailable', 'password_validation': 'False'}])
 
 
-# receive reset password token
-@app.route('/api/reset-password/token-receiving/<string:token>', methods=['GET'])
-def receive_reset_password_token(token):
-    data = list()
-    account_reset = Account.verify_reset_password_token(token=token)
-    if account_reset is None:
-        msg = 'Can not match this token. Invalid token = ' + str(token)
-        return bad_request(msg)
-    data.append(account_reset.to_dict())
-    return jsonify(data)
-
-
-# receive registration password token
+# ---------------- registration ------------------- #
+# receive registration confirmation token
 @app.route('/api/registration/token-receiving/<string:token>', methods=['GET'])
 def receive_registration_token(token):
     data = list()
     account_verified = Account.verify_register_token(token=token)
+    print(account_verified)
     # invalid token
     if account_verified is None:
         msg = 'Can not match this token. Invalid token = ' + str(token)
@@ -192,6 +182,19 @@ def get_registration_token_by_account_id(account_id):
     account_with_token_dict['status'] = 'success'
     account_with_token_dict['token'] = token
     data.append(account_with_token_dict)
+    return jsonify(data)
+
+
+# ---------------- reset password ------------------- #
+# receive reset password token
+@app.route('/api/reset-password/token-receiving/<string:token>', methods=['GET'])
+def receive_reset_password_token(token):
+    data = list()
+    account_reset = Account.verify_reset_password_token(token=token)
+    if account_reset is None:
+        msg = 'Can not match this token. Invalid token = ' + str(token)
+        return bad_request(msg)
+    data.append(account_reset.to_dict())
     return jsonify(data)
 
 
