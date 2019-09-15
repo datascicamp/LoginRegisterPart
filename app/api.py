@@ -22,6 +22,14 @@ def get_account_by_account_email(account_email):
     return jsonify(data)
 
 
+# get account by account_nickname
+@app.route('/api/account/account-nickname/<string:account_nickname>', methods=['GET'])
+def get_account_by_account_nickname(account_nickname):
+    data = list()
+    data.append(Account.query.filter(Account.account_nickname == account_nickname).first_or_404().to_dict())
+    return jsonify(data)
+
+
 # get account by account_status
 @app.route('/api/account/account-status/<string:account_status>', methods=['GET'])
 def get_account_by_account_status(account_status):
@@ -45,6 +53,7 @@ def get_all_accounts():
 def create_new_account():
     account_email = request.form.get('account_email')
     password = request.form.get('password')
+    account_nickname = request.form.get('account_nickname')
 
     # check faults
     if password is None or account_email is None:
@@ -53,7 +62,7 @@ def create_new_account():
         return bad_request('please use a different account_email.')
 
     # db operations
-    new_account = Account(account_email=account_email, account_status='unverify')
+    new_account = Account(account_email=account_email, account_nickname=account_nickname, account_status='unverify')
     new_account.set_password(password)
     db.session.add(new_account)
     db.session.commit()
@@ -70,6 +79,7 @@ def create_new_account():
 @app.route('/api/account/account-updating', methods=['PUT'])
 def update_account():
     account_email = request.form.get('account_email')
+    account_nickname = request.form.get('account_nickname')
     if account_email is None:
         return bad_request('This post must include account_email field.')
 
@@ -86,6 +96,8 @@ def update_account():
     # Mention that user mustn't change their account_email without re-validate their email
     if account_email is not None:
         account.account_email = account_email
+    if account_nickname is not None:
+        account.account_nickname = account_nickname
     if account_status is not None:
         account.account_status = account_status
 

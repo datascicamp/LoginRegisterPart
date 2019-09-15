@@ -8,6 +8,8 @@ def usage():
     usages = [
         {'api_format': '/api/account/account-id/<int:account_id>', 'method': 'GET',
          'description': 'Get account by account_id'},
+        {'api_format': '/api/account/account-nickname/<string:account_nickname>', 'method': 'GET',
+         'description': 'Get account by account_nickname'},
         {'api_format': '/api/account/account-email/<string:account_email>', 'method': 'GET',
          'description': 'Get account by account_email'},
         {'api_format': '/api/account/account-status/<string:account_status>', 'method': 'GET',

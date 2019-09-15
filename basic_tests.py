@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # data={'account_email': 'herbwang1989@gmail.com'})
 
     # sending email by account_email
-    requests.post('http://127.0.0.1:5000/api/reset-password/email-sending-by-account-email',
-                  data={'account_email': 'xinyaotian@yeah.net'})
+    requests.put('http://127.0.0.1:4998/api/account/account-updating',
+                  data={'account_email': 'mike@yeah.net', 'account_nickname': '胖球球', 'password': '123'})
 
     pass
