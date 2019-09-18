@@ -28,7 +28,9 @@ class Config(object):
     # ------------------------------ #
 
     # protocol + `://` + dbUsername + `:` + dbPassword + `@` + dbIp + `:` + dbPort + `/` + dbName + `?sslmode=` +sslMode
-    SQLALCHEMY_DATABASE_URI = 'postgres://dbuser:docker@174.137.53.253:5432/testdb?sslmode=disable'
+    # config example:
+    # SQLALCHEMY_DATABASE_URI = 'postgres://dbuser:docker@174.137.53.253:5432/testdb?sslmode=disable'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
