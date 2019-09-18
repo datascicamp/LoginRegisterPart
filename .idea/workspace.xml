@@ -17,7 +17,7 @@
     <session id="649688263">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="14" />
+          <entry key="project.closed" value="15" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="9" />
           <entry key="project.open.time.2" value="2" />
@@ -49,7 +49,7 @@
           <entry key="Dockerfile" value="68" />
           <entry key="html" value="95" />
           <entry key="md" value="16" />
-          <entry key="py" value="6365" />
+          <entry key="py" value="6386" />
           <entry key="txt" value="90" />
         </counts>
       </usages-collector>
@@ -59,7 +59,7 @@
           <entry key="HTML" value="95" />
           <entry key="Markdown" value="16" />
           <entry key="PLAIN_TEXT" value="90" />
-          <entry key="Python" value="6365" />
+          <entry key="Python" value="6386" />
         </counts>
       </usages-collector>
     </session>
@@ -69,8 +69,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
-              <caret line="32" column="42" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="42" />
+            <state relative-caret-position="356">
+              <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -188,7 +188,6 @@
         <option value="$PROJECT_DIR$/email_pack.py" />
         <option value="$PROJECT_DIR$/app/templates/email/reset_password.html" />
         <option value="$PROJECT_DIR$/app/templates/email/reset_password.txt" />
-        <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/app/__init__.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Dockerfile" />
@@ -197,6 +196,7 @@
         <option value="$PROJECT_DIR$/app/api.py" />
         <option value="$PROJECT_DIR$/basic_tests.py" />
         <option value="$PROJECT_DIR$/app/routes.py" />
+        <option value="$PROJECT_DIR$/config.py" />
       </list>
     </option>
   </component>
@@ -380,7 +380,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14592275" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -507,8 +506,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="32" column="42" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="42" />
+        <state relative-caret-position="356">
+          <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
         </state>
       </provider>
     </entry>
