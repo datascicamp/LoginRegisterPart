@@ -23,8 +23,8 @@ class Config(object):
     POSTGRES_SSLMODE = os.environ.get('POSTGRES_SSLMODE')
     #
     # # assembled Database URI
-    # SQLALCHEMY_DATABASE_URI = POSTGRES_PROTOCOL + '://' + POSTGRES_USERNAME + ':' + POSTGRES_PASSWORD + '@' +\
-    #                           POSTGRES_HOST + ':' + POSTGRES_PORT + '/' + POSTGRES_DBNAME + '?sslmode=' + POSTGRES_SSLMODE
+    SQLALCHEMY_DATABASE_URI = POSTGRES_PROTOCOL + '://' + POSTGRES_USERNAME + ':' + POSTGRES_PASSWORD + '@' +\
+                              POSTGRES_HOST + ':' + POSTGRES_PORT + '/' + POSTGRES_DBNAME + '?sslmode=' + POSTGRES_SSLMODE
     # ------------------------------ #
 
     # protocol + `://` + dbUsername + `:` + dbPassword + `@` + dbIp + `:` + dbPort + `/` + dbName + `?sslmode=` +sslMode
