@@ -14,8 +14,14 @@ class Config(object):
 
     # ------------------------------ #
     # # K8s config
-    POSTGRES_HOST = os.environ.get('POSTGRES_SERVICE_HOST')
-    POSTGRES_PORT = os.environ.get('POSTGRES_SERVICE_PORT')
+    POSTGRES_HOST = os.environ.get('DSC_USERINFO_POSTGRES_SERVICE_HOST')
+    POSTGRES_PORT = os.environ.get('DSC_USERINFO_POSTGRES_SERVICE_PORT')
+
+    if POSTGRES_HOST is None:
+        POSTGRES_HOST = os.environ.get('POSTGRES_SERVICE_HOST')
+    if POSTGRES_PORT is None:
+        POSTGRES_PORT = os.environ.get('POSTGRES_SERVICE_PORT')
+
     POSTGRES_DBNAME = os.environ.get('POSTGRES_DBNAME')
     POSTGRES_USERNAME = os.environ.get('POSTGRES_USERNAME')
     POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
