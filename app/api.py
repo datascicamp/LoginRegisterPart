@@ -126,15 +126,18 @@ def validate_password():
     account = Account.query.filter(Account.account_email == account_email).first()
     if account is None:
         return jsonify([{'account_id': -1, 'account_email': account.account_email,
+                         'account_nickname': 'UnKnown',
                          'account_status': 'Unavailable', 'password_validation': 'False'}])
     validate = account.check_password(password)
 
     # authentication verify success.
     if validate is True:
         return jsonify([{'account_id': account.account_id, 'account_email': account.account_email,
+                         'account_nickname': account.account_nickname,
                          'account_status': account.account_status, 'password_validation': 'True'}])
     # authentication verify failed.
     return jsonify([{'account_id': -1, 'account_email': account.account_email,
+                     'account_nickname': 'UnKnown',
                      'account_status': 'Unavailable', 'password_validation': 'False'}])
 
 

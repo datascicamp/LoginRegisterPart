@@ -1,5 +1,5 @@
-from app import db
-from app.models import Account
+# from app import db
+# from app.models import Account
 import requests
 
 if __name__ == '__main__':
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     # data={'account_email': 'herbwang1989@gmail.com'})
 
     # sending email by account_email
-    requests.put('http://127.0.0.1:4998/api/account/account-updating',
-                  data={'account_email': 'mike@yeah.net', 'account_nickname': '胖球球', 'password': '123'})
-
+    result = requests.post('http://service.datascicamp.com:30080/api/account/validate-password',
+                  data={'account_email': 'xinyaotian@yeah.net', 'password': '123'})
+    print(result.content)
     pass
